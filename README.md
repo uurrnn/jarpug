@@ -1,7 +1,12 @@
 # jarpug
 
-## install and run dev server
+### requires [yarn](https://code.facebook.com/posts/1840075619545360)
+if you have npm, install with:
+```
+npm install yarn -g
+```
 
+### install and run dev server
 ```
 mkdir $PROJECT_DIRECTORY
 cd $PROJECT_DIRECTORY
