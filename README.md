@@ -1,6 +1,6 @@
 # jarpug
 
-## install and run dev sevcer
+## install and run dev server
 
 ```
 mkdir $PROJECT_DIRECTORY
