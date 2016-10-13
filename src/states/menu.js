@@ -15,6 +15,8 @@ class Menu extends Phaser.State {
 
     this.input.onDown.add(this.onInputDown, this);
     this.canContinueToNextState = true;
+    // go straight to game for dev purposes
+    this.game.state.start('game');
   }
 
   update() {}

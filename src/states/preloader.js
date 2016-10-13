@@ -19,8 +19,9 @@ class Preloader extends Phaser.State {
   loadResources() {
     this.game.load.image('tiles', '/assets/tiles.png');
     this.game.load.image('enemy', '/assets/alien.png');
-
+    this.game.load.spritesheet('bldgs', '/assets/bldgs.png', 32, 64);
     this.game.load.spritesheet('player', '/assets/spaceman.png', 16, 16);
+    this.game.load.tilemap('mapOtiles', '/assets/tiles.json', null, Phaser.Tilemap.TILED_JSON);
   }
 
   onLoadComplete() {

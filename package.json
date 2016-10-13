@@ -1,7 +1,7 @@
 {
-  "name": "japurg",
-  "version": "1.0.0",
-  "description": "",
+  "name": "jarpug2",
+  "version": "0.0.1",
+  "description": "jrpg roguelike written in phaserJS",
   "scripts": {
     "start":       "budo src/main.js:bundle.js --live -- -d -e src/main.js -t [babelify --comments false --presets es2015]",
     "prebuild":    "mkdirp build",
@@ -13,22 +13,21 @@
     "copy:assets": "cp -rf assets build/",
     "copy:phaser": "cp -rf node_modules/phaser/build/phaser.min.js build/phaser.min.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "aaron griffin",
+  "license": "GPL",
   "dependencies": {
-    "phaser": "^2.5.0"
+    "phaser": "^2.6.2"
   },
   "devDependencies": {
     "babel": "^6.5.2",
-    "babel-cli": "^6.9.0",
+    "babel-cli": "^6.16.0",
+    "babel-preset-es2015": "^6.16.0",
     "babelify": "^7.3.0",
-    "babel-preset-es2015": "^6.9.0",
-    "browserify": "^13.0.1",
-    "budo": "^8.3.0",
-    "clean-css": "^3.4.17",
-    "htmlprocessor": "^0.2.3",
+    "browserify": "^13.1.0",
+    "budo": "^9.2.1",
+    "clean-css": "^3.4.20",
+    "htmlprocessor": "^0.2.4",
     "mkdirp": "^0.5.1",
-    "uglify-js": "^2.6.2"
+    "uglify-js": "^2.7.3"
   }
 }

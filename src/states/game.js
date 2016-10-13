@@ -1,5 +1,3 @@
-import Crosshairs from '../prefabs/crosshairs';
-import Target from '../prefabs/target';
 // better way to do this??
 var keyA,
     keyS,
@@ -9,7 +7,12 @@ var keyA,
     enemy,
     map,
     layer,
-    cursors;
+    cursors,
+    group,
+    tileset,
+    mapIndex,
+    oldY = 0,
+    locs = [];
 
 class Game extends Phaser.State {
 
@@ -21,47 +24,89 @@ class Game extends Phaser.State {
 
     this.game.stage.backgroundColor = 0x000d1a;
 
-    var data = '1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1\n1,6,6,6,1,6,6,1,1,6,6,6,1,6,6,1\n1,6,1,6,1,6,6,6,1,6,6,6,1,6,6,1\n1,6,6,6,6,6,6,6,6,6,1,6,6,6,6,1\n1,6,1,1,1,6,1,1,6,6,1,1,1,6,6,1\n1,6,6,6,6,6,6,6,6,6,6,6,1,6,6,1\n1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1';
+    //  Create our map
+    map = this.game.add.tilemap('mapOtiles');
+    map.addTilesetImage('tiles');
 
-      //  Add data to the cache
-      this.game.cache.addTilemap('dynamicMap', null, data, Phaser.Tilemap.CSV);
+    layer = map.createLayer('One');
+    layer.resizeWorld();
+    map.setCollisionBetween(2, 2, 'One');
+    // uncomment below to see map collision data
+    //layer.debug = true;
 
-      //  Create our map
-      map = this.game.add.tilemap('dynamicMap', 32, 32);
+    group = this.game.add.group();
+    //  Create some trees, each in a unique location
+    /*for (var i = 0; i < 2; i++)
+    {
+      do {
+          var x = this.game.math.snapTo(this.game.world.randomX, 32) / 32;
+          var y = this.game.math.snapTo(this.game.world.randomY, 32) / 32;
 
-      //  'tiles' = cache image key, 16x16 = tile size
-      map.addTilesetImage('tiles', 'tiles', 32, 32);
-      map.setCollisionBetween(1, 2);
-      //  0 is important
-      layer = map.createLayer(0);
-      layer.resizeWorld();
-      // uncomment below to see map collision data
-      //layer.debug = true;
+          if (y > 17)
+          {
+              y = 17;
+          }
 
-      //  Player
-      player = this.game.add.sprite(40, 40, 'player', 1);
-      player.animations.add('left', [8,9], 10, true);
-      player.animations.add('right', [1,2], 10, true);
-      player.animations.add('up', [11,12,13], 10, true);
-      player.animations.add('down', [4,5,6], 10, true);
+          var idx = (y * 17) + x;
+      }
+      while (locs.indexOf(idx) !== -1)
 
-      // enemy
-      enemy = this.game.add.sprite(100, 100, 'enemy');
-      this.game.physics.enable(enemy, Phaser.Physics.ARCADE);
-      this.game.physics.enable(player, Phaser.Physics.ARCADE);
-      player.body.setSize(10, 14, 2, 1);
-      this.game.camera.follow(player);
+      locs.push(idx);
 
-      cursors = this.game.input.keyboard.createCursorKeys();
-      keyA = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-      keyS = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
-      keyD = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-      keyW = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+      group.create(x * 32, y * 32, 'bldgs', 0);
+    }*/
+
+    //  Player
+    player = group.create(40, 40, 'player', 1);
+    player.animations.add('left', [8,9], 10, true);
+    player.animations.add('right', [1,2], 10, true);
+    player.animations.add('up', [11,12,13], 10, true);
+    player.animations.add('down', [4,5,6], 10, true);
+
+    // enemy
+    enemy = group.create(175, 70, 'enemy');
+    this.game.physics.enable(enemy, Phaser.Physics.ARCADE);
+    this.game.physics.enable(player, Phaser.Physics.ARCADE);
+    player.body.setSize(16, 16, 0, 0);
+    this.game.camera.follow(player);
+
+    cursors = this.game.input.keyboard.createCursorKeys();
+    keyA = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+    keyS = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+    keyD = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+    keyW = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
 
     /*setup a timer to end the game
     this.endGameTimer = this.game.time.create();
     this.endGameTimer.add(Phaser.Timer.SECOND * 15, this.endGame,this);
     this.endGameTimer.start(); */
+
+
+    group.create(64,32,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(96,96,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(128,96,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(192,96,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(224,96,'bldgs', this.game.rnd.integerInRange(0, 4));
+
+    group.create(32,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(64,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(96,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(128,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(160,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(192,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(224,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(256,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(288,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(320,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(352,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(384,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(416,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(448,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(480,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(512,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+    group.create(544,160,'bldgs', this.game.rnd.integerInRange(0, 4));
+
+    group.sort();
   }
 
   update() {
@@ -73,28 +118,43 @@ class Game extends Phaser.State {
 
     if (cursors.left.isDown || keyA.isDown)
       {
-          player.body.velocity.x = -100;
+          player.body.velocity.x = -200;
           player.play('left');
+          if (keyW.isDown || cursors.up.isDown) {
+            player.body.velocity.y = -200;
+          }
+          else if (keyS.isDown || cursors.down.isDown) {
+            player.body.velocity.y = 200;
+          }
       }
       else if (cursors.right.isDown || keyD.isDown)
       {
-          player.body.velocity.x = 100;
+          player.body.velocity.x = 200;
           player.play('right');
+          if (keyW.isDown || cursors.up.isDown) {
+            player.body.velocity.y = -200;
+          }
+          else if (keyS.isDown || cursors.down.isDown) {
+            player.body.velocity.y = 200;
+          }
       }
       else if (cursors.up.isDown || keyW.isDown)
       {
-          player.body.velocity.y = -100;
+          player.body.velocity.y = -200;
           player.play('up');
       }
       else if (cursors.down.isDown || keyS.isDown)
       {
-          player.body.velocity.y = 100;
+          player.body.velocity.y = 200;
           player.play('down');
       }
       else
       {
           player.animations.stop();
       }
+
+      group.sort('y', Phaser.Group.SORT_DESCENDING);
+
     }
 
   endGame() {
