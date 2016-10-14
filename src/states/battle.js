@@ -5,7 +5,7 @@ class Battle extends Phaser.State {
   }
 
   create() {
-
+    alert('battle!');
   }
 
   update() {
